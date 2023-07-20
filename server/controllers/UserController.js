@@ -26,7 +26,7 @@ const getUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-    let { name, email, password } = req.body;
+    let { name, email, password, toggl_api_key } = req.body;
 
     try {
 
@@ -42,7 +42,8 @@ const createUser = async (req, res) => {
         let newUser = await UserRepository.create({
             name,
             email,
-            password
+            password,
+            toggl_api_key
         });
 
         if (newUser._id === undefined) {
@@ -77,7 +78,7 @@ const deleteUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    let { name, email, password } = req.body;
+    let { name, email, password, toggl_api_key } = req.body;
     let userId = req.params.userId;
 
     try {
@@ -103,7 +104,7 @@ const updateUser = async (req, res) => {
             data.email = email;
         }
 
-        if (password !== undefined) {
+        if (password !== undefined && password !== '') {
             let salt = await bcrypt.genSalt(10);
             password = await bcrypt.hash(password, salt);
 
@@ -113,6 +114,8 @@ const updateUser = async (req, res) => {
         if (name !== undefined) {
             data.name = name;
         }
+
+        data.toggl_api_key = toggl_api_key;
 
         if (data) {
             let response = await UserRepository.update(userId, data);

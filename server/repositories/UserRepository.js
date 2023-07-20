@@ -6,7 +6,7 @@ const getById = (id) => {
 }
 
 const getAll = () => {
-    return User.find();
+    return User.find().select(['name', 'email', 'toggl_api_key']);
 }
 
 const getByEmail = (email) => {

@@ -3,6 +3,7 @@ import Auth from "../auth/Auth";
 import AppLayout from "../layout/AppLayout";
 import Dasboard from "../dashboard/Dashboard";
 import UserList from "../user/UserList";
+import RequireAuthRoute from "./RequireAuthRoute";
 
 const RouteList = [
     {
@@ -15,11 +16,11 @@ const RouteList = [
         children: [
             {
                 path: "",
-                element: <Dasboard />
+                element: <RequireAuthRoute><Dasboard /></RequireAuthRoute>
             },
             {
                 path: "users",
-                element: <UserList/>
+                element: <RequireAuthRoute><UserList/></RequireAuthRoute>
             }
         ]
     },

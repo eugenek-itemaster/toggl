@@ -113,3 +113,16 @@ main {
 .auth-image-container {
     margin-bottom: 50px;
 }
+.table svg {
+    width: 16px;
+    height: 16px;
+}
+.alert {
+    padding: 0.5rem 1rem!important;
+}
+.alert svg {
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin-top: 5px;
+}

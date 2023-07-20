@@ -1,0 +1,12 @@
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const USER_LOADED = 'USER_LOADED';
+export const USER_LOGOUT = 'USER_LOGOUT';
+export const GET_USERS = 'GET_USERS';
+export const USER_POPUP = 'USER_POPUP';
+export const EDIT_USER = 'EDIT_USER';
+export const STORE_USER = 'STORE_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+export const DELETE_USER = 'DELETE_USER';
+export const ERROR_USER_SAVE = 'ERROR_USER_SAVE';
+export const CLEAR_USER_ALERTS = 'CLEAR_USER_ALERTS';

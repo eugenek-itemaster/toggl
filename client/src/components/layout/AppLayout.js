@@ -1,8 +1,11 @@
 import React from 'react';
 import {Outlet, Link, NavLink} from "react-router-dom";
 import {Home, Users, LogOut} from "react-feather";
+import {logout} from "../../actions/auth";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 
-const AppLayout = () => {
+const AppLayout = ({auth, logout}) => {
     return (
         <div className="container-fluid">
             <div className="row">
@@ -25,7 +28,7 @@ const AppLayout = () => {
 
                         <ul className="nav flex-column">
                             <li className="nav-item">
-                                <Link className="nav-link">
+                                <Link className="nav-link" onClick={logout}>
                                     <LogOut/>Logout
                                 </Link>
                             </li>
@@ -42,4 +45,13 @@ const AppLayout = () => {
     );
 }
 
-export default AppLayout;
+AppLayout.propTypes = {
+    auth: PropTypes.object.isRequired,
+    logout: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, {logout})(AppLayout);

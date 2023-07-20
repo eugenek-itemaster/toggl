@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 import aTeamLogo from '../../assets/images/a-team-logo.svg'
 import togglLogo from '../../assets/images/toggl-logo.webp';
+import {login} from "../../actions/auth";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+import {Navigate} from "react-router-dom";
 
-const Auth = () => {
+const Auth = ({login, isAuthenticated}) => {
     const [ formData, setFormData ] = useState({
         email: 'eugene.k@a-team.global',
-        password: '1111111111'
+        password: '1111111'
     });
 
     const { email, password } = formData;
@@ -15,7 +19,11 @@ const Auth = () => {
     const onSubmit = async e => {
         e.preventDefault();
 
-        //login(email, password);
+        login(email, password);
+    }
+
+    if (isAuthenticated) {
+        return <Navigate to="/"></Navigate>
     }
 
     return (
@@ -66,4 +74,13 @@ const Auth = () => {
     );
 }
 
-export default Auth;
+Auth.propTypes = {
+    login: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { login })(Auth);

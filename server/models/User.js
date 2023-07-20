@@ -12,7 +12,11 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false
+    },
+    toggl_api_key: {
+        type: String,
+        required: false
     },
     date: {
         type: Date,
