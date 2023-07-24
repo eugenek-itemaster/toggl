@@ -1,10 +1,11 @@
 import {LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, USER_LOGOUT} from '../actions/actionTypes';
+import UserDto from "../dto/UserDto";
 
 let initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
-    user: null
+    user: new UserDto()
 };
 
 export default (state = initialState, action) => {

@@ -3,7 +3,9 @@ import Auth from "../auth/Auth";
 import AppLayout from "../layout/AppLayout";
 import Dasboard from "../dashboard/Dashboard";
 import UserList from "../user/UserList";
-import RequireAuthRoute from "./RequireAuthRoute";
+import AuthenticatedRouteMiddleware from "../middlewares/AuthenticatedRouteMiddleware";
+import PermissionMiddleware from "../middlewares/PermissionMiddleware";
+import {ROLE_ADMIN, ROLE_MANAGER} from "../../data/constans";
 
 const RouteList = [
     {
@@ -16,11 +18,15 @@ const RouteList = [
         children: [
             {
                 path: "",
-                element: <RequireAuthRoute><Dasboard /></RequireAuthRoute>
+                element: <AuthenticatedRouteMiddleware><Dasboard /></AuthenticatedRouteMiddleware>
             },
             {
                 path: "users",
-                element: <RequireAuthRoute><UserList/></RequireAuthRoute>
+                element: <AuthenticatedRouteMiddleware>
+                            <PermissionMiddleware onlyFor={[ROLE_ADMIN, ROLE_MANAGER]} isLink={true}>
+                                <UserList/>
+                            </PermissionMiddleware>
+                         </AuthenticatedRouteMiddleware>
             }
         ]
     },

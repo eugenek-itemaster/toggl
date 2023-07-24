@@ -1,9 +1,11 @@
-import {React, Fragment, useState, Component} from 'react';
+import {React, Fragment, Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Modal, Button, Alert} from "react-bootstrap";
 import {createUser, storeUser, updateUser, clearAlerts} from "../../actions/user";
 import {AlertCircle} from "react-feather";
+import PermissionMiddleware from "../middlewares/PermissionMiddleware";
+import {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_MANAGER} from "../../data/constans";
 
 class UserForm extends Component {
     constructor(props) {
@@ -19,7 +21,11 @@ class UserForm extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.user.user !== prevProps.user.user) {
-            this.setState({user: this.props.user.user})
+            let user = this.props.user.user;
+            if (this.props.authUser.role === ROLE_MANAGER && !user.role) {
+                user.role = ROLE_DEVELOPER;
+            }
+            this.setState({user: user})
         }
     }
 
@@ -27,9 +33,12 @@ class UserForm extends Component {
         e.preventDefault();
 
         let user = this.state.user;
+
         if (user._id !== null) {
             this.props.updateUser(user._id, user);
         } else {
+            user.parent_id = this.props.authUser._id;
+
             this.props.storeUser(user);
         }
     }
@@ -91,6 +100,26 @@ class UserForm extends Component {
                                     />
                                 </div>
                                 <div className="mb-3">
+                                    <label className="form-label">Role</label>
+                                    <select className="form-select" name="role" value={this.state.user.role} onChange={this.handleChange}>
+                                        <option value=""></option>
+                                        <PermissionMiddleware onlyFor={[ROLE_ADMIN]}><option value={ROLE_ADMIN}>{ROLE_ADMIN}</option></PermissionMiddleware>
+                                        <PermissionMiddleware onlyFor={[ROLE_ADMIN]}><option value={ROLE_MANAGER}>{ROLE_MANAGER}</option></PermissionMiddleware>
+                                        <PermissionMiddleware onlyFor={[ROLE_ADMIN, ROLE_MANAGER]}><option value={ROLE_DEVELOPER}>{ROLE_DEVELOPER}</option></PermissionMiddleware>
+                                    </select>
+                                </div>
+                                {this.state.user.role === ROLE_DEVELOPER && this.props.authUser.role === ROLE_ADMIN && <div className="mb-3">
+                                    <label className="form-label">Manager</label>
+                                    <select className="form-select" name="parent_id" value={this.state.user.parent_id} onChange={this.handleChange}>
+                                        <option value=""></option>
+                                        {this.props.user.users.map(user => {
+                                            if (user.role === ROLE_MANAGER) {
+                                                return (<option key={user._id} value={user._id}>{user.name}</option>);
+                                            }
+                                        })}
+                                    </select>
+                                </div>}
+                                <div className="mb-3">
                                     <label className="form-label">Toggl API key</label>
                                     <input
                                         type="text"
@@ -119,10 +148,12 @@ UserForm.propTypes = {
     storeUser: PropTypes.func.isRequired,
     updateUser: PropTypes.func.isRequired,
     clearAlerts: PropTypes.func.isRequired,
+    authUser: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
     user: state.user,
+    authUser: state.auth.user
 });
 
 export default connect(mapStateToProps, {createUser, storeUser, updateUser, clearAlerts})(UserForm);

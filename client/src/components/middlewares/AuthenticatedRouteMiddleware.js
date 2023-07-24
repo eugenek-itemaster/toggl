@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {Navigate} from "react-router-dom";
 
-const RequireAuthRoute = ({isAuthenticated, loading, children}) => {
+const AuthenticatedRouteMiddleware = ({isAuthenticated, loading, children}) => {
     if (!isAuthenticated && !loading) {
         return (<Navigate to="/login"></Navigate>)
     }
@@ -11,7 +11,7 @@ const RequireAuthRoute = ({isAuthenticated, loading, children}) => {
     return children;
 }
 
-RequireAuthRoute.propTypes = {
+AuthenticatedRouteMiddleware.propTypes = {
     isAuthenticated: PropTypes.bool,
     loading: PropTypes.bool
 }
@@ -21,4 +21,4 @@ const mapStateToProps = state => ({
     loading: state.auth.loading
 });
 
-export default connect(mapStateToProps, {})(RequireAuthRoute);
+export default connect(mapStateToProps, {})(AuthenticatedRouteMiddleware);

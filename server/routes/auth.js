@@ -14,7 +14,7 @@ const AuthController = require('../controllers/AuthController');
 router.post('/', AuthValidator.login, AuthController.login);
 
 /**
- * @method POST
+ * @method GET
  * @access public
  * @endpoint /api/auth/
  * @desc Authorization

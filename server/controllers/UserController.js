@@ -1,9 +1,18 @@
 const UserRepository = require('../repositories/UserRepository');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const {ROLE_ADMIN} = require("../constants/constans");
 
 const getUsers = async (req, res) => {
-    let users = await UserRepository.getAll();
+    let authUser = req.user;
+
+    let users;
+    if (authUser.role === ROLE_ADMIN) {
+        users = await UserRepository.getAll();
+    } else {
+        users = await UserRepository.getByParentId(authUser.id);
+    }
+
     res.json(users);
 }
 
@@ -26,15 +35,9 @@ const getUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-    let { name, email, password, toggl_api_key } = req.body;
+    let { name, email, password, role, toggl_api_key, parent_id } = req.body;
 
     try {
-
-        let user = await UserRepository.getByEmail(email);
-        if (user !== null) {
-            throw 'User already exists.';
-        }
-
         let salt = await bcrypt.genSalt(10);
 
         password = await bcrypt.hash(password, salt);
@@ -43,7 +46,9 @@ const createUser = async (req, res) => {
             name,
             email,
             password,
-            toggl_api_key
+            role,
+            toggl_api_key,
+            parent_id
         });
 
         if (newUser._id === undefined) {
@@ -78,31 +83,17 @@ const deleteUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    let { name, email, password, toggl_api_key } = req.body;
+    let { name, email, password, role, toggl_api_key, parent_id } = req.body;
     let userId = req.params.userId;
 
     try {
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            throw 'Invalid user Id.';
-        }
-
-        let user = await UserRepository.getById(userId);
-
-        if (user === null) {
-            throw 'User not exists.';
-        }
-
         let data = {};
 
-        if (email !== undefined) {
-            let newEmailUser = await UserRepository.getByEmailAndNotId(email, userId);
-
-            if (newEmailUser.length > 0) {
-                throw 'User with this email already exists.';
-            }
-
-            data.email = email;
-        }
+        data.name = name;
+        data.email = email;
+        data.toggl_api_key = toggl_api_key;
+        data.role = role;
+        data.parent_id = parent_id;
 
         if (password !== undefined && password !== '') {
             let salt = await bcrypt.genSalt(10);
@@ -111,22 +102,16 @@ const updateUser = async (req, res) => {
             data.password = password;
         }
 
-        if (name !== undefined) {
-            data.name = name;
-        }
-
-        data.toggl_api_key = toggl_api_key;
-
         if (data) {
             let response = await UserRepository.update(userId, data);
             if (response) {
                 res.json({success: true});
             } else {
-                throw "User not updated.";
+                throw "User not updated";
             }
         }
     } catch (error) {
-        res.status(401).json({error: true, message: error});
+        res.status(401).json({errors: [error]});
     }
 }
 

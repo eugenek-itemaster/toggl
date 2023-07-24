@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const config = require('config');
+const authMiddleware = require('../middleware/auth');
 
 const UserValidator = require('../validators/UserValidator');
 const UserController = require('../controllers/UserController');
@@ -11,7 +12,7 @@ const UserController = require('../controllers/UserController');
  * @endpoint /api/users/
  * @desc Users list
  **/
-router.get('/', UserController.getUsers);
+router.get('/', authMiddleware, UserController.getUsers);
 
 /**
  * @method GET
@@ -19,7 +20,7 @@ router.get('/', UserController.getUsers);
  * @endpoint /api/users/<userId>
  * @desc Get user by id
  **/
-router.get('/:userId', UserController.getUser);
+router.get('/:userId', authMiddleware, UserController.getUser);
 
 /**
  * @method POST
@@ -27,7 +28,7 @@ router.get('/:userId', UserController.getUser);
  * @endpoint /api/users/
  * @desc Create user
  **/
-router.post('/', UserValidator.create, UserController.createUser);
+router.post('/', [authMiddleware, UserValidator.create], UserController.createUser);
 
 /**
  * @method DELETE
@@ -35,7 +36,7 @@ router.post('/', UserValidator.create, UserController.createUser);
  * @endpoint /api/users/<userId>
  * @desc Delete user
  **/
-router.delete('/:userId', UserController.deleteUser);
+router.delete('/:userId', authMiddleware, UserController.deleteUser);
 
 /**
  * @method PUT
@@ -43,6 +44,6 @@ router.delete('/:userId', UserController.deleteUser);
  * @endpoint /api/users/<userId>
  * @desc Update user
  **/
-router.put('/:userId', UserController.updateUser);
+router.put('/:userId', [authMiddleware, UserValidator.update], UserController.updateUser);
 
 module.exports = router;

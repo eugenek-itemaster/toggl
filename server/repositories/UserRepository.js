@@ -6,11 +6,15 @@ const getById = (id) => {
 }
 
 const getAll = () => {
-    return User.find().select(['name', 'email', 'toggl_api_key']);
+    return User.find().select(['name', 'email', 'role', 'toggl_api_key', 'parent_id']);
 }
 
 const getByEmail = (email) => {
     return User.findOne({email: email});
+}
+
+const getByParentId = (parent_id) => {
+    return User.find({parent_id: parent_id}).select(['name', 'email', 'role', 'toggl_api_key', 'parent_id']);;
 }
 
 const create = (data) => {
@@ -37,6 +41,7 @@ module.exports = {
     getById,
     getAll,
     getByEmail,
+    getByParentId,
     create,
     update,
     remove,

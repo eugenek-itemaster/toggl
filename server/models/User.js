@@ -14,7 +14,15 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    role: {
+        type: String,
+        required: false
+    },
     toggl_api_key: {
+        type: String,
+        required: false
+    },
+    parent_id: {
         type: String,
         required: false
     },

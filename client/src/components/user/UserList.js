@@ -1,10 +1,12 @@
-import {React, Fragment, useEffect, useState} from 'react';
+import {React, Fragment, useEffect} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {getUsers, createUser, editUser, clearAlerts, deleteUser} from "../../actions/user";
 import {Trash, Edit2, CheckCircle} from "react-feather";
 import UserForm from "./UserForm";
 import {Alert} from "react-bootstrap";
+import PermissionMiddleware from "../middlewares/PermissionMiddleware";
+import {ROLE_ADMIN, ROLE_MANAGER} from "../../data/constans";
 
 const UserList = ({ getUsers, user: { users, success }, createUser, editUser, deleteUser, clearAlerts }) => {
     useEffect(() => {
@@ -35,9 +37,12 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
                 <div className="col-md-10">
                     <h1 className="h2">Users</h1>
                 </div>
-                <div className="col-md-2 text-end">
-                    <button className="btn btn-success btn-sm" onClick={createUser}>Add user</button>
-                </div>
+                <PermissionMiddleware onlyFor={[ROLE_ADMIN, ROLE_MANAGER]}>
+                    <div className="col-md-2 text-end">
+                        <button className="btn btn-success btn-sm" onClick={createUser}>Add user</button>
+                    </div>
+                    <UserForm></UserForm>
+                </PermissionMiddleware>
             </div>
             {successAlert}
             <table className="table table-striped">
@@ -46,6 +51,7 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -55,15 +61,15 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
                             <td>{user._id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
+                            <td>{user.role}</td>
                             <td>
-                                <a href="" className="text-primary me-2" onClick={(e) => onEdit(user, e)}><Edit2/></a>
-                                <a href="" className="text-danger" onClick={(e) => onDelete(user, e)}><Trash/></a>
+                                <a href="/" className="text-primary me-2" onClick={(e) => onEdit(user, e)}><Edit2/></a>
+                                <a href="/" className="text-danger" onClick={(e) => onDelete(user, e)}><Trash/></a>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <UserForm></UserForm>
         </Fragment>
     );
 }

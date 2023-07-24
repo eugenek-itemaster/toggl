@@ -4,6 +4,8 @@ import {Home, Users, LogOut} from "react-feather";
 import {logout} from "../../actions/auth";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import PermissionMiddleware from "../middlewares/PermissionMiddleware";
+import {ROLE_ADMIN, ROLE_MANAGER} from "../../data/constans";
 
 const AppLayout = ({auth, logout}) => {
     return (
@@ -17,11 +19,13 @@ const AppLayout = ({auth, logout}) => {
                                     <Home/>Dashboard
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/users">
-                                    <Users/>Users
-                                </NavLink>
-                            </li>
+                            <PermissionMiddleware onlyFor={[ROLE_ADMIN, ROLE_MANAGER]}>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/users">
+                                        <Users/>Users
+                                    </NavLink>
+                                </li>
+                            </PermissionMiddleware>
                         </ul>
 
                         <hr/>
