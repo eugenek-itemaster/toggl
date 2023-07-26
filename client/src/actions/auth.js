@@ -1,6 +1,8 @@
 import {LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, USER_LOGOUT} from "./actionTypes";
 import axios from "axios";
 import authToken from "../utils/authToken";
+import {setAlert} from "./alert";
+import {ALERT_ERROR} from "../data/constans";
 
 export const login = (email, password) => async dispatch => {
     const config = {
@@ -21,7 +23,7 @@ export const login = (email, password) => async dispatch => {
 
         dispatch(loadUser());
     } catch (error) {
-        //dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch(setAlert(error.response.data.errors[0].msg, ALERT_ERROR));
 
         dispatch({
             type: LOGIN_FAIL,

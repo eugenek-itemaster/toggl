@@ -1,10 +1,12 @@
-const {ROLE_ADMIN, ROLE_DEVELOPER} = require("../constants/constans");
+const {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_MANAGER} = require("../constants/constans");
 const UserRepository = require("../repositories/UserRepository");
 const TogglService = require("../services/TogglService");
 const dayjs = require("dayjs");
 const duration = require("dayjs/plugin/duration");
+const {response} = require("express");
 
 dayjs.extend(duration);
+
 const getDevelopers = async (req, res) => {
     let authUser = req.user;
 
@@ -61,6 +63,56 @@ const getDevelopers = async (req, res) => {
     res.json(response);
 }
 
+const getManagers = async (req, res) => {
+    let authUser = req.user;
+
+    let users = await UserRepository.getByRole(ROLE_MANAGER);
+
+    let response = [];
+    for (let user of users) {
+        let countDevelopers = await UserRepository.getByParentIdAndRole(user._id, ROLE_DEVELOPER);
+
+        response.push({
+            id: user._id,
+            name: user.name,
+            count: countDevelopers.length
+        });
+    }
+
+    res.json(response);
+}
+
+const stopTracker = async (req, res) => {
+    try {
+        let userId = req.params.userId;
+
+        let user = {};
+        try {
+            user = await UserRepository.getById(userId);
+        } catch (error) {
+            throw "User not found";
+        }
+
+        let toggleService = new TogglService();
+
+        let currentEntry = await toggleService.getCurrentEntry(user.toggl_api_key);
+        if (!currentEntry) {
+            throw "Tracker not ON";
+        }
+
+        let response = await toggleService.stopEntry(user.toggl_api_key, currentEntry.workspace_id, currentEntry.id);
+        if (response === false) {
+            throw "Tracker not stopped";
+        }
+
+        res.json({success: true});
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
 module.exports = {
-    getDevelopers
+    getDevelopers,
+    getManagers,
+    stopTracker
 }

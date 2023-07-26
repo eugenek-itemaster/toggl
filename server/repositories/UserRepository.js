@@ -14,7 +14,7 @@ const getByEmail = (email) => {
 }
 
 const getByParentId = (parent_id) => {
-    return User.find({parent_id: parent_id}).select(['name', 'email', 'role', 'toggl_api_key', 'parent_id']);;
+    return User.find({parent_id: parent_id}).select(['name', 'email', 'role', 'toggl_api_key', 'parent_id']);
 }
 
 const create = (data) => {

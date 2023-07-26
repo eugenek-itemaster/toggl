@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import PermissionMiddleware from "../middlewares/PermissionMiddleware";
 import {ROLE_ADMIN, ROLE_MANAGER} from "../../data/constans";
+import Alert from "./Alert";
 
 const AppLayout = ({auth, logout}) => {
     return (
@@ -43,6 +44,7 @@ const AppLayout = ({auth, logout}) => {
 
                 <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <Outlet />
+                    <Alert></Alert>
                 </main>
             </div>
         </div>

@@ -1,10 +1,15 @@
-import {DASHBOARD_GET_DEVELOPERS, DASHBOARD_GET_MANAGERS} from "../actions/actionTypes";
+import {
+    DASHBOARD_DEVELOPERS_LOADING,
+    DASHBOARD_GET_DEVELOPERS,
+    DASHBOARD_GET_MANAGERS,
+    DASHBOARD_MANAGERS_LOADING
+} from "../actions/actionTypes";
 
 let initialState = {
     developers: [],
     managers: [],
-    loadingDevelopers: true,
-    loadingManagers: true
+    developersLoading: true,
+    managersLoading: true
 };
 
 export default (state = initialState, action) => {
@@ -15,13 +20,23 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 developers: payload,
-                loadingDevelopers: false
+                developersLoading: false
             }
         case DASHBOARD_GET_MANAGERS:
             return {
                 ...state,
                 managers: payload,
-                loadingManagers: false
+                managersLoading: false
+            }
+        case DASHBOARD_DEVELOPERS_LOADING:
+            return {
+                ...state,
+                developersLoading: payload,
+            }
+        case DASHBOARD_MANAGERS_LOADING:
+            return {
+                ...state,
+                managersLoading: payload,
             }
         default:
             return state;

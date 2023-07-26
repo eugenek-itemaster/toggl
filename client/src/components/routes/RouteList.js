@@ -6,6 +6,8 @@ import UserList from "../user/UserList";
 import AuthenticatedRouteMiddleware from "../middlewares/AuthenticatedRouteMiddleware";
 import PermissionMiddleware from "../middlewares/PermissionMiddleware";
 import {ROLE_ADMIN, ROLE_MANAGER} from "../../data/constans";
+import Profile from "../profile/Profile";
+import NotFound from "../layout/NotFound";
 
 const RouteList = [
     {
@@ -14,22 +16,30 @@ const RouteList = [
     },
     {
         path: "/",
-        element: <AppLayout />,
+        element: <AuthenticatedRouteMiddleware><AppLayout /></AuthenticatedRouteMiddleware>,
         children: [
             {
                 path: "",
-                element: <AuthenticatedRouteMiddleware><Dasboard /></AuthenticatedRouteMiddleware>
+                element:    <Dasboard />
             },
             {
                 path: "users",
-                element: <AuthenticatedRouteMiddleware>
-                            <PermissionMiddleware onlyFor={[ROLE_ADMIN, ROLE_MANAGER]} isLink={true}>
+                element:    <PermissionMiddleware onlyFor={[ROLE_ADMIN, ROLE_MANAGER]} isLink={true}>
                                 <UserList/>
                             </PermissionMiddleware>
-                         </AuthenticatedRouteMiddleware>
+
+            },
+            {
+                path: "users/:userId",
+                element:    <Profile/>
+
             }
         ]
     },
+    {
+        path: "*",
+        element: <AuthenticatedRouteMiddleware><NotFound/></AuthenticatedRouteMiddleware>
+    }
 ];
 
 export default RouteList;

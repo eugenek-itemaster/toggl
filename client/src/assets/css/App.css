@@ -123,6 +123,27 @@ main {
 .alert svg {
     width: 16px;
     height: 16px;
-    float: right;
-    margin-top: 5px;
+}
+.card-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    opacity: 0.5;
+    z-index: 9999;
+    color: black;
+    display: inline-block;
+}
+.card-body {
+    position: relative;
+}
+.alert-float {
+    position: fixed!important;
+    top: 50px;
+    right: 15px;
+    z-index: 9999;
+    margin-bottom: 0;
+    opacity: 1;
 }

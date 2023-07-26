@@ -4,16 +4,20 @@ const mongoose = require('mongoose');
 const {ROLE_ADMIN} = require("../constants/constans");
 
 const getUsers = async (req, res) => {
-    let authUser = req.user;
+    try {
+        let authUser = req.user;
 
-    let users;
-    if (authUser.role === ROLE_ADMIN) {
-        users = await UserRepository.getAll();
-    } else {
-        users = await UserRepository.getByParentId(authUser.id);
+        let users;
+        if (authUser.role === ROLE_ADMIN) {
+            users = await UserRepository.getAll();
+        } else {
+            users = await UserRepository.getByParentId(authUser.id);
+        }
+
+        res.json(users);
+    } catch (error) {
+        res.json({error: error});
     }
-
-    res.json(users);
 }
 
 const getUser = async (req, res) => {

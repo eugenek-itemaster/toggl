@@ -2,8 +2,7 @@ import {React, Fragment, Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Modal, Button, Alert} from "react-bootstrap";
-import {createUser, storeUser, updateUser, clearAlerts} from "../../actions/user";
-import {AlertCircle} from "react-feather";
+import {createUser, storeUser, updateUser} from "../../actions/user";
 import PermissionMiddleware from "../middlewares/PermissionMiddleware";
 import {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_MANAGER} from "../../data/constans";
 
@@ -37,7 +36,9 @@ class UserForm extends Component {
         if (user._id !== null) {
             this.props.updateUser(user._id, user);
         } else {
-            user.parent_id = this.props.authUser._id;
+            if (this.props.authUser.role !== ROLE_ADMIN) {
+                user.parent_id = this.props.authUser._id;
+            }
 
             this.props.storeUser(user);
         }
@@ -53,12 +54,6 @@ class UserForm extends Component {
     }
 
     render() {
-        let errorAlert = false;
-        if (this.props.user.error) {
-            errorAlert = <Alert variant="danger"><AlertCircle/>{this.props.user.error}</Alert>
-            setTimeout(this.props.clearAlerts, 3000);
-        }
-
         return (
             <Fragment>
                 <Modal show={this.props.user.userPopup}>
@@ -68,7 +63,6 @@ class UserForm extends Component {
                     <Modal.Body>
                         <form>
                             <div className="modal-body">
-                                {errorAlert}
                                 <div className="mb-3">
                                     <label className="form-label">Name</label>
                                     <input
@@ -147,7 +141,6 @@ UserForm.propTypes = {
     createUser: PropTypes.func.isRequired,
     storeUser: PropTypes.func.isRequired,
     updateUser: PropTypes.func.isRequired,
-    clearAlerts: PropTypes.func.isRequired,
     authUser: PropTypes.object.isRequired,
 }
 
@@ -156,4 +149,4 @@ const mapStateToProps = state => ({
     authUser: state.auth.user
 });
 
-export default connect(mapStateToProps, {createUser, storeUser, updateUser, clearAlerts})(UserForm);
+export default connect(mapStateToProps, {createUser, storeUser, updateUser})(UserForm);

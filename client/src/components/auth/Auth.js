@@ -5,6 +5,7 @@ import {login} from "../../actions/auth";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Navigate} from "react-router-dom";
+import Alert from "../layout/Alert";
 
 const Auth = ({login, isAuthenticated}) => {
     const [ formData, setFormData ] = useState({
@@ -70,6 +71,7 @@ const Auth = ({login, isAuthenticated}) => {
                     </form>
                 </div>
             </div>
+            <Alert></Alert>
         </div>
     );
 }

@@ -61,6 +61,23 @@ class TogglService {
             return [];
         }
     }
+
+    stopEntry = async (token, workspaceId, entryId) => {
+        try {
+            let endpoint = `workspaces/${workspaceId}/time_entries/${entryId}/stop`;
+
+            let response = await this.api.patch(endpoint, {}, {
+                auth: {
+                    username: token,
+                    password: 'api_token'
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return false;
+        }
+    }
 }
 
 module.exports = TogglService;

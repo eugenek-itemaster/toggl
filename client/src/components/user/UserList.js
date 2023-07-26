@@ -1,10 +1,9 @@
 import {React, Fragment, useEffect} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {getUsers, createUser, editUser, clearAlerts, deleteUser} from "../../actions/user";
-import {Trash, Edit2, CheckCircle} from "react-feather";
+import {getUsers, createUser, editUser, deleteUser} from "../../actions/user";
+import {Trash, Edit2} from "react-feather";
 import UserForm from "./UserForm";
-import {Alert} from "react-bootstrap";
 import PermissionMiddleware from "../middlewares/PermissionMiddleware";
 import {ROLE_ADMIN, ROLE_MANAGER} from "../../data/constans";
 
@@ -12,12 +11,6 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
     useEffect(() => {
         getUsers()
     }, [getUsers]);
-
-    let successAlert = false;
-    if (success) {
-        successAlert = <Alert variant="success"><CheckCircle/>{success}</Alert>
-        setTimeout(clearAlerts, 3000);
-    }
 
     const onEdit = (user, e) => {
         e.preventDefault();
@@ -44,7 +37,6 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
                     <UserForm></UserForm>
                 </PermissionMiddleware>
             </div>
-            {successAlert}
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -86,7 +78,6 @@ UserList.propTypes = {
     user: PropTypes.object.isRequired,
     createUser: PropTypes.func.isRequired,
     editUser: PropTypes.func.isRequired,
-    clearAlerts: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
 }
 
@@ -94,4 +85,4 @@ const mapStateToProps = state => ({
     user: state.user
 });
 
-export default connect(mapStateToProps, { getUsers, createUser, editUser, clearAlerts, deleteUser })(UserList);
+export default connect(mapStateToProps, { getUsers, createUser, editUser, deleteUser })(UserList);

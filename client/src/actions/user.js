@@ -5,10 +5,10 @@ import {
     EDIT_USER,
     STORE_USER,
     UPDATE_USER,
-    CLEAR_USER_ALERTS,
     DELETE_USER,
-    ERROR_USER_SAVE
 } from "./actionTypes";
+import {setAlert} from "./alert";
+import {ALERT_ERROR, ALERT_SUCCESS} from "../data/constans";
 
 export const getUsers = () => async dispatch => {
     try {
@@ -19,7 +19,7 @@ export const getUsers = () => async dispatch => {
             payload: res.data
         });
     } catch (error) {
-        //dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch(setAlert(error, ALERT_ERROR));
     }
 }
 
@@ -54,12 +54,11 @@ export const storeUser = (user) => async dispatch => {
             payload: `User ${user.name} created`
         });
 
+        dispatch(setAlert(`User ${user.name} created`, ALERT_SUCCESS));
+
         dispatch(getUsers());
     } catch (error) {
-        dispatch({
-            type: ERROR_USER_SAVE,
-            payload: error.response.data.errors[0].msg
-        });
+        dispatch(setAlert(error.response.data.errors[0].msg, ALERT_ERROR));
     }
 }
 
@@ -80,12 +79,11 @@ export const updateUser = (id, user) => async dispatch => {
             payload: `User ${user.name} updated`
         });
 
+        dispatch(setAlert(`User ${user.name} updated`, ALERT_SUCCESS));
+
         dispatch(getUsers());
     } catch (error) {
-        dispatch({
-            type: ERROR_USER_SAVE,
-            payload: error.response.data.errors[0].msg
-        });
+        dispatch(setAlert(error.response.data.errors[0].msg, ALERT_ERROR));
     }
 }
 
@@ -98,14 +96,10 @@ export const deleteUser = (user) => async dispatch => {
             payload: `User ${user.name} deleted`
         });
 
+        dispatch(setAlert(`User ${user.name} deleted`, ALERT_SUCCESS));
+
         dispatch(getUsers());
     } catch (error) {
-
+        dispatch(setAlert(error.response.data.errors[0].msg, ALERT_ERROR));
     }
-}
-
-export const clearAlerts = () => dispatch => {
-    dispatch({
-        type: CLEAR_USER_ALERTS
-    });
 }

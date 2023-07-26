@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getDevelopers} from "../../actions/dashboard";
+import {getDevelopers, stopTracker} from "../../actions/dashboard";
 import {TOGGL_IN, TOGGL_OFF} from "../../data/constans";
-import {PauseCircle, RefreshCcw} from "react-feather";
+import {PauseCircle, RefreshCcw, List} from "react-feather";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import dayjs from "dayjs";
 
 import 'bootstrap-daterangepicker/daterangepicker.css';
+import {Link} from "react-router-dom";
+import Loader from "../layout/Loader";
 
 class DashboardDevelopers extends Component {
     constructor(props) {
@@ -35,6 +37,10 @@ class DashboardDevelopers extends Component {
         }, 1);
     }
 
+    onStopTracker(userId) {
+        this.props.stopTracker(userId, this.state.startDate, this.state.endDate);
+    }
+
     render() {
         return (
             <div className="card">
@@ -42,6 +48,7 @@ class DashboardDevelopers extends Component {
                     Developers
                 </div>
                 <div className="card-body">
+                    {this.props.dashboard.developersLoading && <Loader></Loader>}
                     <div className="row">
                         <div className="col-md-10">
                             <DateRangePicker initialSettings={{
@@ -69,21 +76,17 @@ class DashboardDevelopers extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.dashboard.developers.length === 0 && <tr>
-                                <td colSpan="4" className="text-center">
-                                    <div className="spinner-border text-secondary" role="status">
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
-                                </td>
-                            </tr>}
-                            {this.props.dashboard.developers.length > 0 && this.props.dashboard.developers.map(user => (
+                            {this.props.dashboard.developers.map(user => (
                                 <tr key={user.id}>
                                     <td>{user.name}</td>
                                     <td dangerouslySetInnerHTML={{__html: user.status === false ? '' : (user.status === 1 ? TOGGL_IN : TOGGL_OFF)}} className="text-center">
                                     </td>
                                     <td className="text-center">{user.time}</td>
                                     <td className="text-center">
-                                        {user.action ? <PauseCircle className="text-danger" role="button"/> : <PauseCircle className="text-secondary"/>}
+                                        {user.action ? <PauseCircle className="text-danger" role="button" onClick={() => this.onStopTracker(user.id)}/> : <PauseCircle className="text-secondary"/>}
+                                        <Link to={`/users/${user.id}`} className="text-primary text-decoration-none" style={{marginLeft: '15px'}}>
+                                            <List></List>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
@@ -99,5 +102,5 @@ const mapStateToProps = state => ({
     dashboard: state.dashboard
 });
 export default connect(
-    mapStateToProps, {getDevelopers}
+    mapStateToProps, {getDevelopers, stopTracker}
 )(DashboardDevelopers);
