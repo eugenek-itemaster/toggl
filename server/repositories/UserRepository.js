@@ -37,6 +37,14 @@ const getByEmailAndNotId = (email, id) => {
     return User.find({email: email, _id : {$ne: id}});
 }
 
+const getByRole = (role) => {
+    return User.find({role: role});
+}
+
+const getByParentIdAndRole = (parent_id, role) => {
+    return User.find({parent_id: parent_id, role: role});
+}
+
 module.exports = {
     getById,
     getAll,
@@ -45,5 +53,7 @@ module.exports = {
     create,
     update,
     remove,
-    getByEmailAndNotId
+    getByEmailAndNotId,
+    getByRole,
+    getByParentIdAndRole
 }

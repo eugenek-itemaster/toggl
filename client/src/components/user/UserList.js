@@ -56,7 +56,14 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
+                    {users.length === 0 && <tr>
+                        <td colSpan="5" className="text-center">
+                            <div className="spinner-border text-secondary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>}
+                    {users.length > 0 && users.map(user => (
                         <tr key={user._id}>
                             <td>{user._id}</td>
                             <td>{user.name}</td>
