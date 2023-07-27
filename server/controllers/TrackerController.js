@@ -108,8 +108,38 @@ const stopTracker = async (req, res) => {
     }
 }
 
+const getEntries = async (req, res) => {
+    try {
+        let userId = req.params.userId;
+
+        let user = {};
+        try {
+            user = await UserRepository.getById(userId);
+        } catch (error) {
+            throw "User not found";
+        }
+
+        let toggleService = new TogglService();
+
+        let currentEntry = await toggleService.getEntries(user.toggl_api_key);
+        if (!currentEntry) {
+            throw "Tracker not ON";
+        }
+
+        let response = await toggleService.stopEntry(user.toggl_api_key, currentEntry.workspace_id, currentEntry.id);
+        if (response === false) {
+            throw "Tracker not stopped";
+        }
+
+        res.json({success: true});
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
 module.exports = {
     getDevelopers,
     getManagers,
-    stopTracker
+    stopTracker,
+    getEntries
 }

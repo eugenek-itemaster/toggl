@@ -17,6 +17,8 @@ export const getProfile = (userId, authUser) => async dispatch => {
                 type: PROFILE_LOADED,
                 payload: user.data
             });
+
+            //const entries = await axios.get(`/api/tracker/${userId}`);
         }
 
     } catch (error) {
