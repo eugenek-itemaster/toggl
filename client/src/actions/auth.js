@@ -23,7 +23,7 @@ export const login = (email, password) => async dispatch => {
 
         dispatch(loadUser());
     } catch (error) {
-        dispatch(setAlert(error.response.data.errors[0].msg, ALERT_ERROR));
+        dispatch(setAlert(error.response.data.message, ALERT_ERROR));
 
         dispatch({
             type: LOGIN_FAIL,

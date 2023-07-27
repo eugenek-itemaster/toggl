@@ -42,10 +42,7 @@ const getDevelopers = async (req, res) => {
                 let entries = await toggleService.getEntries(user.toggl_api_key, start_date, end_date);
                 entries.forEach((entry) => {
                     if (entry.stop) {
-                        let entryStart = dayjs(entry.start);
-                        let entryStop = dayjs(entry.stop);
-
-                        time += parseInt(entryStop.diff(entryStart));
+                        time += entry.duration * 1000;
                     }
                 });
             }
@@ -56,7 +53,7 @@ const getDevelopers = async (req, res) => {
             name: user.name,
             status: status,
             time: dayjs.duration(time).format('HH:mm'),
-            action: action
+            action: action,
         });
     }
 
