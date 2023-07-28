@@ -117,6 +117,10 @@ main {
     width: 16px;
     height: 16px;
 }
+.user-info-page svg {
+    width: 24px;
+    height: 24px;
+}
 .alert {
     padding: 0.5rem 1rem!important;
 }
@@ -148,4 +152,10 @@ main {
     opacity: 1;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     padding: 20px 15px!important;
+}
+.current-entry td {
+    color: rgb(160, 74, 151)!important;
+}
+.error-entry td {
+    color: #dc3545!important;
 }

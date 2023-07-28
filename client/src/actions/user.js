@@ -47,7 +47,7 @@ export const storeUser = (user) => async dispatch => {
     const body = JSON.stringify(user);
 
     try {
-        const res = await axios.post('/api/users', body, config);
+        await axios.post('/api/users', body, config);
 
         dispatch({
             type: STORE_USER,
@@ -72,7 +72,7 @@ export const updateUser = (id, user) => async dispatch => {
     const body = JSON.stringify(user);
 
     try {
-        const res = await axios.put(`/api/users/${user._id}`, body, config);
+        await axios.put(`/api/users/${user._id}`, body, config);
 
         dispatch({
             type: UPDATE_USER,
@@ -89,7 +89,7 @@ export const updateUser = (id, user) => async dispatch => {
 
 export const deleteUser = (user) => async dispatch => {
     try {
-        const res = await axios.delete(`/api/users/${user._id}`);
+        await axios.delete(`/api/users/${user._id}`);
 
         dispatch({
             type: DELETE_USER,

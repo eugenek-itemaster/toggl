@@ -4,11 +4,13 @@ import {connect} from "react-redux";
 import {Navigate} from "react-router-dom";
 
 const AuthenticatedRouteMiddleware = ({isAuthenticated, loading, children}) => {
-    if (!isAuthenticated && !loading) {
-        return (<Navigate to="/login"></Navigate>)
-    }
+    if (!loading) {
+        if (!isAuthenticated ) {
+            return (<Navigate to="/login"></Navigate>)
+        }
 
-    return children;
+        return children;
+    }
 }
 
 AuthenticatedRouteMiddleware.propTypes = {

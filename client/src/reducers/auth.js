@@ -29,7 +29,8 @@ export default (state = initialState, action) => {
                 ...state,
                 token: null,
                 isAuthenticated: false,
-                loading: false
+                loading: false,
+                user: new UserDto()
             }
         case USER_LOADED:
             return {

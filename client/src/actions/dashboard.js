@@ -5,7 +5,6 @@ import {
     DASHBOARD_GET_MANAGERS,
     DASHBOARD_MANAGERS_LOADING
 } from "./actionTypes";
-import {getUsers} from "./user";
 import {setAlert} from "./alert";
 import {ALERT_ERROR, ALERT_SUCCESS} from "../data/constans";
 

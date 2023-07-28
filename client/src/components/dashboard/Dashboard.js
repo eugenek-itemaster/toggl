@@ -3,10 +3,7 @@ import {connect} from 'react-redux';
 import DashboardDevelopers from "./DashboardDevelopers";
 import PermissionMiddleware from "../middlewares/PermissionMiddleware";
 import DashboardManagers from "./DashboardManagers";
-
-function mapStateToProps(state) {
-    return {};
-}
+import Profile from "../profile/Profile";
 
 class Dashboard extends Component {
     render() {
@@ -24,11 +21,20 @@ class Dashboard extends Component {
                             <DashboardManagers></DashboardManagers>
                         </div>
                     </PermissionMiddleware>
+                    <PermissionMiddleware onlyFor={['developer']}>
+                        <div className="col-md-12">
+                            <Profile userId={this.props.authUser._id ?? 0}/>
+                        </div>
+                    </PermissionMiddleware>
                 </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    authUser: state.auth.user
+})
 
 export default connect(
     mapStateToProps,

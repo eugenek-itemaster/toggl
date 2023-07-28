@@ -32,9 +32,9 @@ router.get('/stop/:userId', authMiddleware, TrackerController.stopTracker);
 /**
  * @method GET
  * @access public
- * @endpoint /api/tracker/:userId/entries
+ * @endpoint /api/tracker/entries/:userId
  * @desc Users list
  **/
-router.get('/stop/::userId/entries', authMiddleware, TrackerController.getEntries);
+router.get('/entries/:userId', authMiddleware, TrackerController.getEntries);
 
 module.exports = router;
