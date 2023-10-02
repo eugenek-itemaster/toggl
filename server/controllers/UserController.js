@@ -23,9 +23,6 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         let userId = req.params.userId;
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            throw 'Invalid user Id.';
-        }
 
         let user = await UserRepository.getById(userId);
         if (user === null) {
@@ -55,7 +52,7 @@ const createUser = async (req, res) => {
             parent_id
         });
 
-        if (newUser._id === undefined) {
+        if (newUser.id === undefined) {
             throw "User not added. Please try again later.";
         }
 
@@ -119,10 +116,22 @@ const updateUser = async (req, res) => {
     }
 }
 
+const getMysqlUsers = async (req, res) => {
+    try {
+        let users;
+        users = await UserRepository.getAll();
+
+        res.json(users);
+    } catch (error) {
+        res.json({error: error});
+    }
+}
+
 module.exports = {
     getUsers,
     getUser,
     createUser,
     deleteUser,
-    updateUser
+    updateUser,
+    getMysqlUsers
 }

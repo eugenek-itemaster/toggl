@@ -33,11 +33,11 @@ class UserForm extends Component {
 
         let user = this.state.user;
 
-        if (user._id !== null) {
-            this.props.updateUser(user._id, user);
+        if (user.id !== null) {
+            this.props.updateUser(user.id, user);
         } else {
             if (this.props.authUser.role !== ROLE_ADMIN) {
-                user.parent_id = this.props.authUser._id;
+                user.parent_id = this.props.authUser.id;
             }
 
             this.props.storeUser(user);
@@ -58,7 +58,7 @@ class UserForm extends Component {
             <Fragment>
                 <Modal show={this.props.user.userPopup}>
                     <Modal.Header>
-                        <Modal.Title>{this.props.user.user._id !== null ? 'Edit user ' + this.props.user.user.name : 'Add user'}</Modal.Title>
+                        <Modal.Title>{this.props.user.user.id !== null ? 'Edit user ' + this.props.user.user.name : 'Add user'}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form>
@@ -108,7 +108,7 @@ class UserForm extends Component {
                                         <option value=""></option>
                                         {this.props.user.users.map(user => {
                                             if (user.role === ROLE_MANAGER) {
-                                                return (<option key={user._id} value={user._id}>{user.name}</option>);
+                                                return (<option key={user.id} value={user.id}>{user.name}</option>);
                                             }
                                         })}
                                     </select>
@@ -127,7 +127,7 @@ class UserForm extends Component {
                         </form>
                     </Modal.Body>
                     <Modal.Footer className="text-end">
-                        <Button variant="primary" size="sm" onClick={this.onSubmit}>{this.props.user.user._id !== null ? 'Save' : 'Create'}</Button>
+                        <Button variant="primary" size="sm" onClick={this.onSubmit}>{this.props.user.user.id !== null ? 'Save' : 'Create'}</Button>
                         <Button variant="secondary" size="sm" onClick={() => {this.props.createUser(false)}}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, source } = req.body;
 
     try {
         let user = await UserRepository.getByEmail(email);
@@ -21,8 +21,9 @@ const login = async (req, res) => {
         const payload = {
             user: {
                 id: user.id,
-                role: user.role
-            }
+                role: user.role,
+            },
+            source: source
         };
 
         jwt.sign(

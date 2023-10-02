@@ -1,5 +1,5 @@
 class UserDto {
-    _id;
+    id;
     name;
     email;
     password;
@@ -8,7 +8,7 @@ class UserDto {
     parent_id;
 
     constructor(user = {}) {
-        this._id = user._id ?? null;
+        this.id = user.id ?? null;
         this.name = user.name ?? '';
         this.email = user.email ?? '';
         this.password = user.password ?? '';

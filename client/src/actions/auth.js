@@ -4,14 +4,14 @@ import authToken from "../utils/authToken";
 import {setAlert} from "./alert";
 import {ALERT_ERROR} from "../data/constans";
 
-export const login = (email, password) => async dispatch => {
+export const login = (email, password, source) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
 
-    const body = JSON.stringify({ email, password });
+    const body = JSON.stringify({ email, password, source });
 
     try {
         const res = await axios.post('/api/auth', body, config);

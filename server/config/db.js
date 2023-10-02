@@ -1,18 +1,14 @@
-const mongoose = require('mongoose');
-const config = require('config');
-const DB = config.get('mongoURI');
+const { Sequelize, DataTypes} = require("sequelize");
+const config = require("config");
 
-const DatabaseConnection = async () => {
-    try {
-        await mongoose.connect(DB, {
-            useNewUrlParser: true,
-        });
-
-        console.log(`Database connected`);
-    } catch (error) {
-        console.error(error.message);
-        process.exit(1);
+const sequelize = new Sequelize(
+    config.get('mysql.database'),
+    config.get('mysql.user'),
+    config.get('mysql.password'),
+    {
+        'host': config.get('mysql.host'),
+        'dialect': "mysql",
     }
-}
+);
 
-module.exports = DatabaseConnection;
+module.exports = sequelize;

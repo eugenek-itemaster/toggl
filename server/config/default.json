@@ -1,4 +1,10 @@
 {
   "mongoURI": "mongodb://localhost:27017/toggl",
-  "jwtSecret": "teamtoggltracker"
+  "jwtSecret": "teamtoggltracker",
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "root",
+    "database": "toggl"
+  }
 }

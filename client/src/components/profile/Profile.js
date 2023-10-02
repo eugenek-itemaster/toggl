@@ -107,11 +107,11 @@ class Profile extends Component {
 
         return (
             <div>
-                {this.props.profile.user._id === undefined && !this.props.profile.loading  && <div>
+                {this.props.profile.user.id === undefined && !this.props.profile.loading  && <div>
                     <h3 className="text-center">User not found</h3>
                 </div>}
 
-                {this.props.profile.user._id !== undefined && !this.props.profile.loading && <div className="user-info-page">
+                {this.props.profile.user.id !== undefined && !this.props.profile.loading && <div className="user-info-page">
                     {!this.state.isUserOnHomePage && <h1 className="h2">Profile for {this.props.profile.user.role} {this.props.profile.user.name}</h1>}
 
                     <div className="row">

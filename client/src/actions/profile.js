@@ -12,7 +12,7 @@ export const getProfile = (userId, authUser, startDate, endDate) => async dispat
     try {
         const user = await axios.get(`/api/users/${userId}`);
 
-        if (authUser.role === ROLE_ADMIN || (authUser.role === ROLE_MANAGER && authUser._id === user.data.parent_id) || (authUser.role === ROLE_DEVELOPER && authUser._id === userId)) {
+        if (authUser.role === ROLE_ADMIN || (authUser.role === ROLE_MANAGER && authUser.id === user.data.parent_id) || (authUser.role === ROLE_DEVELOPER && authUser.id === userId)) {
             dispatch({
                 type: PROFILE_LOADED,
                 payload: user.data

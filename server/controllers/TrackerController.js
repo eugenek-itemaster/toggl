@@ -49,7 +49,7 @@ const getDevelopers = async (req, res) => {
         }
 
         response.push({
-            id: user._id,
+            id: user.id,
             name: user.name,
             status: status,
             time: formatTime(time),
@@ -67,10 +67,10 @@ const getManagers = async (req, res) => {
 
     let response = [];
     for (let user of users) {
-        let countDevelopers = await UserRepository.getByParentIdAndRole(user._id, ROLE_DEVELOPER);
+        let countDevelopers = await UserRepository.getByParentIdAndRole(user.id, ROLE_DEVELOPER);
 
         response.push({
-            id: user._id,
+            id: user.id,
             name: user.name,
             count: countDevelopers.length
         });

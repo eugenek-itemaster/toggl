@@ -56,8 +56,8 @@ const UserList = ({ getUsers, user: { users, success }, createUser, editUser, de
                         </td>
                     </tr>}
                     {users.length > 0 && users.map(user => (
-                        <tr key={user._id}>
-                            <td>{user._id}</td>
+                        <tr key={user.id}>
+                            <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>

@@ -10,17 +10,18 @@ import Alert from "../layout/Alert";
 const Auth = ({login, isAuthenticated}) => {
     const [ formData, setFormData ] = useState({
         email: 'eugene.k@a-team.global',
-        password: '1111111'
+        password: '1111111',
+        source: 'mysql'
     });
 
-    const { email, password } = formData;
+    const { email, password, source} = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onSubmit = async e => {
         e.preventDefault();
 
-        login(email, password);
+        login(email, password, source);
     }
 
     if (isAuthenticated) {
@@ -63,6 +64,16 @@ const Auth = ({login, isAuthenticated}) => {
                                     value={password}
                                     onChange={ e => onChange(e)}
                                 />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">DB source</label>
+                                <select className="form-select"
+                                        name="source"
+                                        onChange={ e => onChange(e)}
+                                >
+                                    <option value="mysql">MySql</option>
+                                    <option value="mongo">MongoDB</option>
+                                </select>
                             </div>
                         </div>
                         <div className="modal-footer">

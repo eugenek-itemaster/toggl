@@ -23,7 +23,7 @@ class Dashboard extends Component {
                     </PermissionMiddleware>
                     <PermissionMiddleware onlyFor={['developer']}>
                         <div className="col-md-12">
-                            <Profile userId={this.props.authUser._id ?? 0}/>
+                            <Profile userId={this.props.authUser.id ?? 0}/>
                         </div>
                     </PermissionMiddleware>
                 </div>

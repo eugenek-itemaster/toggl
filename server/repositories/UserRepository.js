@@ -1,48 +1,76 @@
-const User = require('../models/User');
+//const User = require('../models/User');
 const bcrypt = require("bcryptjs");
+const User = require("../models/UserMysql");
 
-const getById = (id) => {
-    return User.findById(id);
+const getById = async (id) => {
+    let user = await User.findByPk(id);
+    if (!user) {
+        throw "User not found";
+    }
+    return user;
 }
 
-const getAll = () => {
-    return User.find().select(['name', 'email', 'role', 'toggl_api_key', 'parent_id']);
+const getAll = async () => {
+    try {
+        return await User.findAll({
+            attributes: ['id', 'name', 'email', 'role', 'toggl_api_key', 'parent_id']
+        });
+    } catch (error) {
+        return [error];
+    }
 }
 
-const getByEmail = (email) => {
-    return User.findOne({email: email});
+const getByEmail = async (email) => {
+    return await User.findOne({ where: { email: email }});
 }
 
-const getByParentId = (parent_id) => {
-    return User.find({parent_id: parent_id}).select(['name', 'email', 'role', 'toggl_api_key', 'parent_id']);
+const getByParentId = async (parent_id) => {
+    return await User.findOne({
+        attributes: ['id', 'name', 'email', 'role', 'toggl_api_key', 'parent_id'],
+        where: { parent_id: parent_id }
+    });
 }
 
-const create = (data) => {
-    let user = new User(data);
-    return user.save();
+const create = async (data) => {
+    data.parent_id = !data.parent_id ? null : data.parent_id;
+    return await User.create(data);
 }
 
 const update = async (id, data) => {
-    let response = await User.updateOne({_id: id}, data);
-    return response.modifiedCount === 1;
+    data.parent_id = !data.parent_id ? null : data.parent_id;
+
+    let response = await User.update(
+        data,
+        {
+            where: {
+                id: id
+            }
+        });
+
+    return response;
 }
 
 const remove = async (id) => {
-    let response = await User.deleteOne({_id: id});
-
-    return parseInt(response.deletedCount) > 0;
+    return await User.destroy({
+        where: {id: id}
+    });;
 }
 
-const getByEmailAndNotId = (email, id) => {
-    return User.find({email: email, _id : {$ne: id}});
+const getByEmailAndNotId = async (email, id) => {
+    return await User.findAll({
+        where: {
+            email: email,
+            id: {$not: id}
+        }
+    });
 }
 
-const getByRole = (role) => {
-    return User.find({role: role});
+const getByRole = async (role) => {
+    return await User.findAll({ where: { role: role }});
 }
 
-const getByParentIdAndRole = (parent_id, role) => {
-    return User.find({parent_id: parent_id, role: role});
+const getByParentIdAndRole = async (parent_id, role) => {
+    return await User.findAll({ where: { parent_id: parent_id,  role: role }});
 }
 
 module.exports = {
