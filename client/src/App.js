@@ -7,6 +7,9 @@ import {Provider} from "react-redux";
 import store from "./store";
 import authToken from "./utils/authToken";
 import {loadUser} from "./actions/auth";
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const router = createBrowserRouter(RouteList);
 
