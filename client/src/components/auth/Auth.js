@@ -14,6 +14,8 @@ const Auth = ({login, isAuthenticated}) => {
         source: 'mysql'
     });
 
+    console.log(process.env);
+
     const { email, password, source} = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
