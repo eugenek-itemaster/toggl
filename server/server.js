@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
-const PORT = 5000;
 const path = require('path');
 var cors = require('cors')
 
 app.use(cors())
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 app.use(express.json({ extended: false }));
 
@@ -21,6 +24,6 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
+app.listen(process.env.APP_PORT, () => {
+    console.log(`Example app listening on port ${process.env.APP_PORT}`)
 })

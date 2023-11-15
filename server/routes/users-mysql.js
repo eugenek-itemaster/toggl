@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const config = require('config');
 const authMiddleware = require('../middleware/auth');
 
 const UserValidator = require('../validators/UserValidator');

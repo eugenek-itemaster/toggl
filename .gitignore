@@ -3,4 +3,5 @@
 /client/node_modules
 /server/config/default.json
 /client/.env
+/server/.env
 /client/build

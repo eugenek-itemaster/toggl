@@ -1,7 +1,6 @@
 const UserRepository = require('../repositories/UserRepository');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 
 const login = async (req, res) => {
     const { email, password, source } = req.body;
@@ -28,7 +27,7 @@ const login = async (req, res) => {
 
         jwt.sign(
             payload,
-            config.get('jwtSecret'),
+            process.env.JWT_SECRET,
             {
                 expiresIn: 360000
             },

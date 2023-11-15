@@ -1,12 +1,11 @@
 const { Sequelize, DataTypes} = require("sequelize");
-const config = require("config");
 
 const sequelize = new Sequelize(
-    config.get('mysql.database'),
-    config.get('mysql.user'),
-    config.get('mysql.password'),
+    process.env.MYSQL_DATABASE,
+    process.env.MYSQL_USER,
+    process.env.MYSQL_PASSWORD,
     {
-        'host': config.get('mysql.host'),
+        'host': process.env.MYSQL_HOST,
         'dialect': "mysql",
     }
 );
