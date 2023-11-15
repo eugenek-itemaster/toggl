@@ -2,7 +2,7 @@
   "name": "toggl-server",
   "version": "1.0.0",
   "description": "Server for a-team toggl server",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
