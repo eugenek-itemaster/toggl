@@ -25,7 +25,7 @@ const getByEmail = async (email) => {
 }
 
 const getByParentId = async (parent_id) => {
-    return await User.findOne({
+    return await User.findAll({
         attributes: ['id', 'name', 'email', 'role', 'toggl_api_key', 'parent_id'],
         where: { parent_id: parent_id }
     });
