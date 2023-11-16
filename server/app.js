@@ -5,9 +5,9 @@ var cors = require('cors')
 
 app.use(cors())
 
-if (process.env.NODE_ENV !== 'production') {
+//if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
-}
+//}
 
 app.use(express.json({ extended: false }));
 
