@@ -12,6 +12,10 @@ const getUsers = async (req, res) => {
             users = await UserRepository.getAll();
         } else {
             users = await UserRepository.getByParentId(authUser.id);
+
+            if (users === null) {
+                users = [];
+            }
         }
 
         res.json(users);
