@@ -4,11 +4,11 @@
   "description": "Server for a-team toggl server",
   "main": "app.js",
   "scripts": {
-    "build": "nodemon server",
+    "build": "nodemon app",
     "start": "node app",
-    "server": "nodemon server",
+    "server": "nodemon app",
     "client": "npm start --prefix ../client",
-    "dev": "concurrently \"npm run server\" \"npm run client \"",
+    "dev": "concurrently \"npm run app\" \"npm run client \"",
     "postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix=../client && npm run build --prefix ../client"
   },
   "author": "",
